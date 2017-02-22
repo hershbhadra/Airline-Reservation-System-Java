@@ -1,0 +1,169 @@
+//Hersh Bhadra: This program is for an airline reservation system
+
+import java.util.Scanner;
+
+public class Plane
+{
+	public static void main(String[] args) 
+    {
+    	while (checkAvailableSeats() > 0) //loop is required for user to enter next multiple values without restarting the program
+    	{
+    		displayAvailableSeats();//PART 1
+            int seat = getUserInput();//PART 2
+            reserveSeats(seat);//PART 3
+            displayAvailableSeats();//PART 1 --> For making second purchase
+            checkForAnotherTicket();//PART 4
+        	}//end while
+    	System.out.println("Sorry. No tickets available. Please take next flight");
+    	}//end main
+	
+	
+	public static boolean Seats[] = {false, false, false, false, false, false, false, false, false, false};
+	//Initialize One dimensional array of type boolean
+	public static void displayAvailableSeats()//PART 1
+	{
+		System.out.println();
+    	System.out.print("AIRLINE RESERVATION SYSTEM");
+        System.out.println();
+        System.out.println("FIRST CLASS: Seat #1, Seat #2, Seat #3, Seat #4, Seat #5");
+        System.out.println("ECONOMY CLASS: Seat #6, Seat #7, Seat #8, Seat #9, Seat #10");        
+        System.out.print("****************************************************************");
+        System.out.println();
+        }//end PART 1: displayAvailableSeats
+	
+	
+	public static int getUserInput()//PART 2
+    {
+        System.out.print("Press '1' for First Class seat. Press '2' for Economy Class seat");
+        System.out.println();
+        Scanner sc = new Scanner(System.in);
+        int seatSelection = sc.nextInt();// read integer input by user
+        if (seatSelection < 1 && seatSelection > 2) 
+        //evaluate the left side of the operation first; if it's TRUE, evaluate the right side. Return TRUE only if both sides TRUE. 
+        {
+            System.out.println("Improper Seat Selection -- Please try again");
+            getUserInput();//in case of incorrect input, ask user to try again
+        	}//end if
+        if (seatSelection == 1 && checkIfFirstClassAvailable() == 0)//conditional to check seat availability in economy class
+        {
+            System.out.println("Sorry First Class section is full. Do you want me to book in Economy class instead?");
+            System.out.println("Type YES or NO");
+            String seatViceVersa = sc.next();// read string input by user
+            if (seatViceVersa.equalsIgnoreCase("YES"))//string comparison that ignores upper case and lower case input
+            {
+                return 2;
+                }//end if
+            else 
+            {
+                System.out.println("Next flight leaves in 3 hours");
+                System.exit(3);
+            	}//end else
+            }
+        if (seatSelection == 2 && checkIfEconomyClassAvailable() == 0)//conditional to check seat availability in economy class
+        //evaluate the left side of the operation first; if it's TRUE, evaluate the right side. Return TRUE only if both sides TRUE. 
+        {
+        	System.out.println("Sorry Economy Class section is full. Do you want me to book in First class instead?");
+            System.out.println("Press YES/NO");
+            String seatViceVersa = sc.next();
+            if (seatViceVersa.equalsIgnoreCase("YES")) //string comparison that ignores upper case and lower case input
+            {
+            	return 1;
+            	}//end if 
+            else 
+            {
+            	System.out.println("Next flight leaves in 3 hours");
+                System.exit(3);
+                }//end else
+            }//end if
+        return seatSelection;//end method to retrieve seatSelection
+        }//end PART 2: getUserInput
+	
+	
+	public static void reserveSeats(int seat) //PART 3
+	{
+		if (seat == 1)//If FIRST CLASS chosen
+		{
+            for (int i = 0; i < 5; i++)//loop continuation condition and increment
+            {
+                if (Seats[i] == false) 
+                {
+                    Seats[i] = true;
+                    System.out.println("Your seat has been booked");
+                    System.out.println("FIRST CLASS: Seat # " + (i + 1));
+                    break;
+                    }//end if
+                }//end for
+            }//end if
+		if (seat == 2)//If ECONOMY CLASS chosen
+		{
+            for (int i = 5; i < 10; i++)//loop continuation condition and increment 
+            {
+                if (Seats[i] == false) 
+                {
+                    Seats[i] = true;
+                    System.out.println("Your seat has been booked");
+                    System.out.println("ECONOMY CLASS: Seat # " + (i + 1));
+                    break;
+                    }//end if
+                }//end for
+            }//end if
+		}//end PART 3: reserveSeats
+	
+	
+	public static void checkForAnotherTicket()//PART 4
+	{
+		System.out.print("Press '1' for ANOTHER PURCHASE or Press '3' to EXIT the system");
+        System.out.println();
+        Scanner sc = new Scanner(System.in);
+        int choice = sc.nextInt();// read integer input by user
+        if (choice != 1 && choice != 3)
+        //evaluate the left side of the operation first; if it's TRUE, evaluate the right side. Return TRUE only if both sides TRUE. 
+        {
+            System.out.println("Improper Choice try again");
+            checkForAnotherTicket();//in case of incorrect input, ask user to try again
+            }//end if
+        if (choice == 3) //Press 3 for exit
+        {
+            System.out.println("Thank you for using Airline Reservation System");
+            System.exit(3);
+            }//end if
+        }//end PART 4: checkForAnotherTicket
+	
+	public static int checkIfFirstClassAvailable()//PART 4.1
+	{
+		for (int i = 0; i < 5; i++)//loop continuation condition and increment
+		{
+            if (Seats[i] == false) 
+            {
+            	return 1;
+            	}//end if
+            }//end for
+		return 0;
+		}//end PART 4.1: checkIfFirstClassAvailable
+
+    public static int checkIfEconomyClassAvailable()//PART 4.2
+    {
+        for (int i = 5; i < 10; i++)//loop continuation condition and increment
+        {
+            if (Seats[i] == false) 
+            {
+            	return 1;
+            	}//end if
+            }//end for
+        return 0;
+        }//end PART 4.2: checkIfEconomyClassAvailable
+
+    public static int checkAvailableSeats()//PART 4.3
+    {
+    	if (checkIfFirstClassAvailable() == 0 && checkIfEconomyClassAvailable() == 0)
+    	//evaluate the left side of the operation first; if it's TRUE, evaluate the right side. Return TRUE only if both sides TRUE. 
+    	{
+    		return 0;
+    		}//end if 
+    	else 
+    	{
+    		return 1;
+        	}//end else
+    	}//end PART 4.3: checkAvailableSeats
+    
+	}//end class Plane
